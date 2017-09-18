@@ -4,9 +4,6 @@ import java.net.URL;
 
 public class WikiConnection {
 
-
-    //public boolean ConnectToWiki()
-
     public boolean ConnectToWiki()
     {
         try
