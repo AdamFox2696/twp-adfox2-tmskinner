@@ -4,20 +4,18 @@ import java.net.URL;
 
 public class WikiConnection {
 
-    public boolean ConnectToWiki()
-    {
-        try
-        {
-            URL wiki = new URL("https://en.wikipedia.org");
-            HttpURLConnection wikiConnect = (HttpURLConnection) wiki.openConnection();
+    protected boolean ConnectToWiki(String url){
+        String output = "";
+        try {
+            URL Url = new URL(url);
+            HttpURLConnection wikiConnect = (HttpURLConnection) Url.openConnection();
             Object objData = wikiConnect.getContent();
+            output = "Connection Successful";
             return true;
         }
-        catch(IOException e)
-        {
+        catch(IOException e) {
+            output = "Unable to Connect, check your internet connection an try again later.";
             return false;
         }
     }
-
-
 }
