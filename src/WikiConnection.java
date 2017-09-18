@@ -8,17 +8,15 @@ public class WikiConnection {
     {
         try
         {
-            URL url = new URL("https://en.wikipedia.org");
-            //URL url = new URL("https://en.kgsucfkqlbycxiuhbuykhgvhgftyjghhjgjfbnhj.org");
-            HttpURLConnection urlConnect = (HttpURLConnection) url.openConnection();
-            Object objData = urlConnect.getContent();
+            URL wiki = new URL("https://en.wikipedia.org");
+            HttpURLConnection wikiConnect = (HttpURLConnection) wiki.openConnection();
+            Object objData = wikiConnect.getContent();
             return true;
         }
         catch(IOException e)
         {
             return false;
         }
-        //System.out.print("It works.");
     }
 
 
