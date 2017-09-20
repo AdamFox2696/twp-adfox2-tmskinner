@@ -4,7 +4,7 @@ import java.net.URL;
 
 public class WikiConnection {
 
-    protected boolean ConnectToWiki(String url){
+    public boolean ConnectToWiki(String url){
         String output = "";
         try {
             URL Url = new URL(url);

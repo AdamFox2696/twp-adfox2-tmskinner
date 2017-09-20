@@ -1,6 +1,6 @@
-public class Sorter {
+public class InsertionSorter {
 
-    protected int[] InsertionSort(int[] input) {
+    public int[] InsertionSort(int[] input) {
         for (int i = 1; i < input.length; i++) {
             int key = input[i];
             int j = i-1;
