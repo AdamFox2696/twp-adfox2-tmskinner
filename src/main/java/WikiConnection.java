@@ -10,21 +10,20 @@ public class WikiConnection {
     public boolean ConnectToWiki(String request){
         String output = "";
         try {
-            String newRequest = formRequest(request);
-            String fullUrl = formUrl(newRequest);
-            System.out.println(fullUrl);
+            String newRequest = createRequest(request);
+            String fullUrl = createUrl(newRequest);
             URL wikiPage = new URL(fullUrl);
             URLConnection wikiConnect = (HttpURLConnection) wikiPage.openConnection();
             wikiConnect.setRequestProperty("User-Agent","Revision Tracker/0.1 (tms326@bsu.edu)");
             BufferedReader in = new BufferedReader(new InputStreamReader(wikiConnect.getInputStream()));
             String inputLine;
-            String meh = "";
+            String JsonData = "";
             output = "Connection Successful";
             System.out.println(output);
             while ((inputLine = in.readLine()) != null)
-                meh = inputLine;
+                JsonData= inputLine;
             in.close();
-            System.out.println(meh);
+            System.out.println(JsonData);
             return true;
         }
         catch(IOException e) {
@@ -33,14 +32,14 @@ public class WikiConnection {
         }
     }
 
-    public String formUrl(String newRequest) {
+    public String createUrl(String newRequest) {
         String firstHalf = "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=revisions&list=users&indexpageids=1&titles=";
         String secondHalf = "&rvprop=user%7Ctimestamp&rvlimit=100";
         String fullUrl = firstHalf + newRequest + secondHalf;
         return fullUrl;
     }
 
-    public String formRequest(String request) {
+    public String createRequest(String request) {
         String[] splitRequest = request.split(" ");
         String newRequest = "";
         for (String words: splitRequest) {
