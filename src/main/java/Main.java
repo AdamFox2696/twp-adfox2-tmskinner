@@ -6,7 +6,7 @@ public class Main {
         WikiConnection w = new WikiConnection();
         EditSorter s = new EditSorter();
         Parser p = new Parser();
-        String input = w.ConnectToWiki("Obama");
+        String input = w.ConnectToWiki("Soup");
         HashMap<String, Integer> usersAndAmounts = p.parseJson(input);
         s.editSort(usersAndAmounts);
 
