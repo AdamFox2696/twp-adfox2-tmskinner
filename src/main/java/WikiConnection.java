@@ -25,7 +25,6 @@ public class WikiConnection {
                 JsonData = inputLine;
             //saves the Json to a string for parsing
             in.close();
-            System.out.println(JsonData);
             return JsonData;
         }
         catch(IOException e) {

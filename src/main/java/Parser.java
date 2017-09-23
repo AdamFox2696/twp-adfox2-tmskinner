@@ -7,35 +7,40 @@ import java.util.*;
 
 public class Parser {
 
-    public Object parseJson(String input) {
-        HashMap<String,String> output = new HashMap<String, String>();
+    public HashMap<String, Integer> parseJson(String input) {
+        HashMap<String,String[]> output = new HashMap<String, String[]>();
+        HashMap<String, Integer> usersAndAmounts = new HashMap<String, Integer>();
         ArrayList<String> users = new ArrayList<String>();
-        ArrayList<String> timeStamps = new ArrayList<String>();
-        Set<String> userList = new HashSet<String>();
         JsonParser parser = new JsonParser();
-        int counter;
         JsonElement rootElement = parser.parse(input);
         JsonObject rootObject = rootElement.getAsJsonObject();
         JsonObject jsonObject = rootObject.getAsJsonObject("query").getAsJsonObject("pages").getAsJsonObject();
         JsonArray array = null;
-        for (Map.Entry<String,JsonElement> entry :  jsonObject.entrySet()) {
+        for (Map.Entry<String,JsonElement> entry : jsonObject.entrySet()) {
             JsonObject entryObject = entry.getValue().getAsJsonObject();
             array = entryObject.getAsJsonArray("revisions");
         }
+        int i = 1;
         for (JsonElement item : array) {
             JsonObject userData = item.getAsJsonObject();
             JsonElement Username = userData.get("user");
             JsonElement TimeStamp = userData.get("timestamp");
-            boolean nameIsInList = false;
+            String[] j = {TimeStamp.getAsString(),Integer.toString(i)};
+            output.put(Username.getAsString(),j);
             users.add(Username.getAsString());
-            timeStamps.add(TimeStamp.getAsString());
-            output.put(Username.getAsString(),TimeStamp.getAsString());
+            i++;
         }
-        /*userList.addAll(users);
-        for (String name : userList) {
-            System.out.println(name);
-        }*/
+        for (String name : users) {
+            int c = 0;
+            for (String otherName : users) {
+                if (name.equals(otherName)) {
+                    c++;
+                }
+            usersAndAmounts.put(name,c);
+            }
+        }
+        System.out.println(usersAndAmounts);
 
-        return output;
+        return usersAndAmounts;
     }
 }
