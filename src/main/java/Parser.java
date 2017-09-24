@@ -1,16 +1,13 @@
 import com.google.gson.*;
-
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.*;
 
 public class Parser {
+    HashMap<String,String[]> sortedByTime = new HashMap<String, String[]>();
+    HashMap<String, Integer> usersAndAmounts = new HashMap<String, Integer>();
+    ArrayList<String> users = new ArrayList<String>();
 
-    public HashMap<String, Integer> parseJson(String input) {
-        HashMap<String,String[]> output = new HashMap<String, String[]>();
-        HashMap<String, Integer> usersAndAmounts = new HashMap<String, Integer>();
-        ArrayList<String> users = new ArrayList<String>();
+
+    public JsonArray parseJson(String input) {
         JsonParser parser = new JsonParser();
         JsonElement rootElement = parser.parse(input);
         JsonObject rootObject = rootElement.getAsJsonObject();
@@ -20,27 +17,42 @@ public class Parser {
             JsonObject entryObject = entry.getValue().getAsJsonObject();
             array = entryObject.getAsJsonArray("revisions");
         }
+        return array;
+    }
+
+    public HashMap<String, String[]> populateSortedByTime(JsonArray array) {
         int i = 1;
         for (JsonElement item : array) {
             JsonObject userData = item.getAsJsonObject();
             JsonElement Username = userData.get("user");
             JsonElement TimeStamp = userData.get("timestamp");
-            String[] j = {TimeStamp.getAsString(),Integer.toString(i)};
-            output.put(Username.getAsString(),j);
-            users.add(Username.getAsString());
+            String[] j = populateTimeAndPosition(TimeStamp, Integer.toString(i));
+            populateUsers(Username);
+            sortedByTime.put(Username.getAsString(),j);
             i++;
         }
-        for (String name : users) {
+        return sortedByTime;
+    }
+
+    private void populateUsers(JsonElement name) {
+        users.add(name.getAsString());
+    }
+
+    private String[] populateTimeAndPosition(JsonElement time, String number) {
+        String[] timeAndPosition = {time.getAsString(), number};
+        return timeAndPosition;
+    }
+
+    public HashMap<String, Integer> countRevisions(ArrayList<String> userList) {
+        for (String name : userList) {
             int c = 0;
-            for (String otherName : users) {
+            for (String otherName : userList) {
                 if (name.equals(otherName)) {
                     c++;
                 }
-            usersAndAmounts.put(name,c);
+                usersAndAmounts.put(name,c);
             }
         }
-        System.out.println(usersAndAmounts);
-
         return usersAndAmounts;
     }
 }
