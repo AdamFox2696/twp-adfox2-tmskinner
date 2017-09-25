@@ -23,6 +23,5 @@ public class GUI extends Application{
        Scene scene = new Scene(new Label("Wiki"));
        primaryStage.setScene(scene);
        primaryStage.show();
-
     }
 }
